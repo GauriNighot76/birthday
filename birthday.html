@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday RAAM ❤️</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:italic,wght@0,400;1,700&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-pink: #fbc2eb;
+            --rose-pink: #ffafbd;
+            --paper: #fffafa;
+            --text: #4a3a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #fbc2eb;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        #heart-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+
+        .heart-particle {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 105, 180, 0.6);
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Initial Screen */
+        #heart-intro {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Letter Section */
+        #letter-section {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .envelope-wrapper { cursor: pointer; z-index: 10; margin-bottom: 20px; transition: transform 0.3s; }
+        .envelope-wrapper:hover { transform: scale(1.1); }
+        
+        .envelope {
+            width: 150px; height: 100px; background: #ff8fa3;
+            border-radius: 0 0 10px 10px; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .envelope::after {
+            content: ""; position: absolute; top: -75px; left: 0;
+            border-left: 75px solid transparent; border-right: 75px solid transparent;
+            border-bottom: 75px solid #ff8fa3; transition: transform 0.6s;
+            transform-origin: bottom; z-index: 2;
+        }
+
+        .envelope.open::after { transform: rotateX(180deg); z-index: 0; }
+
+        .letter-content {
+            max-width: 600px; background: var(--paper); padding: 35px;
+            border-radius: 5px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            display: none; opacity: 0; transform: translateY(20px);
+            transition: 0.5s ease; font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem; line-height: 1.8; text-align: center;
+        }
+
+        .letter-content.show { display: block; opacity: 1; transform: translateY(0); }
+
+        .video-box {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 16/9;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Photo Gallery Below */
+        #gallery {
+            padding: 60px 20px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .photo-card {
+            width: 95%; max-width: 450px; background: white; padding: 10px;
+            border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .photo-card img { width: 100%; border-radius: 10px; display: block; }
+        .hero-img { width: 95%; max-width: 350px; border-radius: 20px; border: 5px solid white; margin-bottom: 20px;}
+
+        #confetti-btn {
+            background: #ff6b81; color: white; border: none;
+            padding: 15px 35px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; margin-top: 20px; font-family: 'Quicksand', sans-serif;
+            box-shadow: 0 5px 15px rgba(255, 107, 129, 0.4);
+        }
+
+        .spotify-container {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 280px; z-index: 100;
+            border: 2px solid white; border-radius: 15px; overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .spotify-container { width: 200px; right: 10px; bottom: 10px; }
+            .letter-content { font-size: 1.2rem; padding: 25px; }
+        }
+    </style>
+</head>
+<body onclick="handleFirstClick()">
+
+    <div id="heart-container"></div>
+
+    <div class="spotify-container">
+       <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/track/14mT8BCOXiUUcGlb7KujkT?utm_source=generator" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <section id="heart-intro">
+        <h1 style="color: white; font-family: 'Playfair Display', serif; font-size: 2.2rem; text-shadow: 0 4px 10px rgba(0,0,0,0.1);">Happy Birthday, Raam ❤️</h1>
+        <p style="color: white; margin-top: 15px;">Click anywhere to start the music...<br>Scroll down for your surprise</p>
+    </section>
+
+    <section id="letter-section">
+        <div class="envelope-wrapper" onclick="toggleLetter(event)">
+            <div class="envelope" id="env">
+                <i data-lucide="heart" fill="white" color="white" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5;"></i>
+            </div>
+        </div>
+
+        <div class="letter-content" id="letter">
+            <div class="video-box">
+                <iframe id="videoIframe" src="https://drive.google.com/file/d/1dEbFUkZ8yMckhm4EYdB8RC5kMDG8LDld/preview" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
+            </div>
+            
+            <p>Happy Birthday, my love.</p><br>
+            <p>You have the sweetest heart, even if you don't always reach for sweets. You enjoy spice, even when it's too much for you, and somehow that feels very you. You are gentle, caring, and quietly strong.</p><br>
+            <p>You feel deeply, you forgive generously, and you love honestly. Being with you makes me feel safe, strong, and truly loved. Even when you get on my nerves, my affection for you never changes.</p><br>
+            <p>I hope life keeps smiling at you. I hope happiness, peace, and success always find their way to you. You are such a lovable man, and you deserve all the good this world has to offer today and always.</p><br>
+            <p style="color: #ff6b81;">Raam I love your voice, I love your hand, I love your smile, I love your eyes, I love your heart, I love your nose. I love you more than anything, and your presence in my life is the greatest gift I could ever ask for.</p>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">(Click envelope to close)</p>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <img src="https://i.ibb.co/ZzdbCwj6/3.jpg" class="hero-img" alt="Birthday Celebration">
+        <div class="photo-card"><img src="https://i.ibb.co/996JyRQy/1.jpg"></div>
+        <div class="photo-card"><img src="https://i.ibb.co/B2VwPCJf/2.jpg"></div>
+        <div class="photo-card"><img src="https://i.ibb.co/ksn2XXLq/4.jpg"></div>
+        
+        <button id="confetti-btn" onclick="explode(event)">I Love You So Much!</button>
+    </section>
+
+    <script>
+        lucide.createIcons();
+        let surpriseStarted = false;
+
+        function handleFirstClick() {
+            if (surpriseStarted) return;
+            surpriseStarted = true;
+            
+            const spotify = document.getElementById('spotifyPlayer');
+            // Refresh Spotify with autoplay on first interaction
+            if (!spotify.src.includes('autoplay=1')) {
+                spotify.src = spotify.src + "&autoplay=1";
+            }
+        }
+
+        function createHeart() {
+            const container = document.getElementById('heart-container');
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            heart.innerHTML = `<i data-lucide="heart" fill="currentColor"></i>`;
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            container.appendChild(heart);
+            lucide.createIcons();
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 500);
+
+        function toggleLetter(e) {
+            e.stopPropagation();
+            const env = document.getElementById('env');
+            const letter = document.getElementById('letter');
+
+            if (!letter.classList.contains('show')) {
+                env.classList.add('open');
+                letter.classList.add('show');
+                setTimeout(() => letter.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+            } else {
+                letter.classList.remove('show');
+                env.classList.remove('open');
+            }
+        }
+
+        function explode(e) {
+            e.stopPropagation();
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#ff6b81', '#ffffff', '#ffafbd']
+            });
+        }
+    </script>
+</body>
+</html>
